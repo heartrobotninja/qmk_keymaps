@@ -4,7 +4,7 @@
 #include "../../config.h"
 
 #define ONESHOT_TAP_TOGGLE 2
-#define ONESHOT_TIMEOUT 3000
+#define ONESHOT_TIMEOUT 1000
 
 #undef LEADER_TIMEOUT
 #define LEADER_TIMEOUT 1000
@@ -13,6 +13,6 @@
 #define TAPPING_TERM 300
 
 #undef TAPPING_TOGGLE
-#define TAPPING_TOGGLE 1
+#define TAPPING_TOGGLE 2
 
 #endif
