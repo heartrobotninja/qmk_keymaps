@@ -10,18 +10,18 @@ extern keymap_config_t keymap_config;
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
-#define _COLEMAK 0
+#define _COLE 0
 #define _LOWER 1
 #define _RAISE 2
-#define _UTIL 16
+#define _AUX 16
 
 /* Layers */
 enum
 {
-  COLEMAK = 0,
+  COLE = 0,
   LOWER, // right hand 10 key.
   RAISE, // left hand Fn, right hand symbols.
-  UTIL,
+  AUX,
 };
 
 /* Tap Dancery */
@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |Lower |Raise | Ctrl | Alt  | Bksp | Spc  |Enter |LShft | ESC  |  <   |   v  |   >  |
  * `-----------------------------------------------------------------------------------'
  */
-        [_COLEMAK] = KEYMAP(
+        [_COLE] = KEYMAP(
             TD(TD_BTK), KC_Q, KC_W, KC_F, KC_P, KC_G, KC_J, KC_L, KC_U, KC_Y, KC_EQL, TD(TD_TDE),
             TD(TD_LPRN), KC_A, KC_R, KC_S, KC_T, KC_D, KC_H, KC_N, KC_E, KC_I, KC_O, TD(TD_RPRN),
             TD(TD_MIN), KC_Z, KC_X, KC_C, KC_V, KC_B, KC_K, KC_M, KC_SLSH, KC_BSLS, KC_UP, TD(TD_USC),
@@ -67,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | ---- | ---- | ---- | ---- | ---- | ---- |  1   |   2  |   3  |   =  | ---- | ---- |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | ---- | UTIL | ---- | ---- | ---- | ---- | ---- |   0  |   .  | ---- | ---- | ---- |
+ * | ---- | ---- | ---- | ---- | ---- | ---- | ---- |   0  |   .  | ---- | ---- | ---- |
  * `-----------------------------------------------------------------------------------'
  */
         [_LOWER] = KEYMAP(
@@ -90,23 +90,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         [_RAISE] = KEYMAP(
             KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_GRV,
             KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_MINS,
-            ____, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_LBRC, KC_RBRC, KC_BSLS, KC_SCLN, KC_QUOT,
+            KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_LBRC, KC_RBRC, KC_BSLS, KC_SCLN, KC_QUOT, KC_EQL,
             ____, ____, ____, ____, ____, ____, ____, ____, ____, KC_COMM, KC_DOT, KC_SLSH),
 
         /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
- * | Reset| ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | VUP  |
+ * | Reset| ____ | ____ | ____ | ____ | ____ | ____ | LOCK | ____ | ____ | ____ | VUP  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | VDWN |
+ * | ____ | ____ |  RUN | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | VDWN |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | PGUP | MUTE |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | HOME | PGDN | END  |
  * `-----------------------------------------------------------------------------------'
  */
-        [_UTIL] = KEYMAP(
+        [_AUX] = KEYMAP(
             RESET, ____, ____, ____, ____, ____, ____, LGUI(KC_L), ____, ____, ____, KC_VOLU,
-            ____, ____, ____, ____, ____, ____, ____, ____, ____, ____, ____, KC_VOLD,
+            ____, ____, LGUI(KC_R), ____, ____, ____, ____, ____, ____, ____, ____, KC_VOLD,
             ____, ____, ____, ____, ____, ____, ____, ____, ____, ____, KC_PGUP, KC_MUTE,
             ____, ____, ____, ____, KC_TAB, KC_DEL, ____, ____, ____, KC_HOME, KC_PGDOWN, KC_END)
 
@@ -134,10 +134,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
   switch (keycode)
   {
-  case COLEMAK:
+  case COLE:
     if (record->event.pressed)
     {
-      persistent_default_layer_set(1UL << _COLEMAK);
+      persistent_default_layer_set(1UL << _COLE);
     }
     return false;
     break;
@@ -145,12 +145,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     if (record->event.pressed)
     {
       layer_on(_LOWER);
-      update_tri_layer(_LOWER, _RAISE, _UTIL);
+      update_tri_layer(_LOWER, _RAISE, _AUX);
     }
     else
     {
       layer_off(_LOWER);
-      update_tri_layer(_LOWER, _RAISE, _UTIL);
+      update_tri_layer(_LOWER, _RAISE, _AUX);
     }
     return false;
     break;
@@ -158,23 +158,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     if (record->event.pressed)
     {
       layer_on(_RAISE);
-      update_tri_layer(_LOWER, _RAISE, _UTIL);
+      update_tri_layer(_LOWER, _RAISE, _AUX);
     }
     else
     {
       layer_off(_RAISE);
-      update_tri_layer(_LOWER, _RAISE, _UTIL);
+      update_tri_layer(_LOWER, _RAISE, _AUX);
     }
     return false;
     break;
-  case UTIL:
+  case AUX:
     if (record->event.pressed)
     {
-      layer_on(_UTIL);
+      layer_on(_AUX);
     }
     else
     {
-      layer_off(_UTIL);
+      layer_off(_AUX);
     }
     return false;
     break;
